@@ -110,3 +110,159 @@ begin
 	dbms_output.put_line('The payable amount is :-' || netamt);
 end;
 /
+-- Create the tbldept table
+create table tbldept (
+  did varchar2(10) primary key,
+  dname varchar2(50)
+);
+
+-- Insert data into tbldept
+insert into tbldept (did, dname) values ('D1', 'Finance');
+insert into tbldept (did, dname) values ('D2', 'Production');
+insert into tbldept (did, dname) values ('D3', 'Marketing');
+insert into tbldept (did, dname) values ('D4', 'IT');
+
+-- Create the tblemp table
+create table tblemp (
+  empid number primary key,
+  fname varchar2(50),
+  lname varchar2(50),
+  jdate date,
+  salary number,
+  manager_id number,
+  post varchar2(50),
+  did varchar2(10), foreign key(did) references tbldept(did)
+);
+
+-- Insert data into tblemp
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (101, 'Hemant', 'Sharma', TO_DATE('20-Jan-1995', 'DD-MON-YYYY'), 50000, NULL, 'Manager', 'D1');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (102, 'Rita', 'Gandhi', TO_DATE('20-Dec-1997', 'DD-MON-YYYY'), 45000, NULL, 'Manager', 'D2');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (103, 'Maya', 'Mistry', TO_DATE('12-Nov-2001', 'DD-MON-YYYY'), 30000, 101, 'Programmer', 'D1');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (104, 'Riya', 'Patel', TO_DATE('15-Sep-2003', 'DD-MON-YYYY'), 28000, 102, 'Programmer', 'D2');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (105, 'Shreya', 'Patel', TO_DATE('17-Oct-2010', 'DD-MON-YYYY'), 5000, 101, 'Peon', 'D1');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (106, 'Karan', 'Patel', TO_DATE('18-Aug-2015', 'DD-MON-YYYY'), 5000, 102, 'Peon', 'D2');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (107, 'Reyanshi', 'Vyas', TO_DATE('05-Jun-2011', 'DD-MON-YYYY'), 15000, 101, 'Clerk', 'D1');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (108, 'Mehul', 'Mehta', TO_DATE('06-May-2010', 'DD-MON-YYYY'), 17000, 102, 'Clerk', 'D2');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (109, 'Krupali', 'Patil', TO_DATE('08-Apr-2015', 'DD-MON-YYYY'), 10000, 101, 'Accountant', 'D1');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (110, 'Maitry', 'Vyas', TO_DATE('11-Mar-2017', 'DD-MON-YYYY'), 10000, 102, 'Accountant', 'D2');
+insert into tblemp (empid, fname, lname, jdate, salary, manager_id, post, did) values (111, 'Mohan', 'Mehta', TO_DATE('27-Feb-2020', 'DD-MON-YYYY'), 15000, 101, 'Electrician', 'D1');
+
+
+
+--11.
+declare
+	v_fname tblemp.fname%type;
+begin
+	select fname into v_fname
+	from tblemp
+ 	where empid = 107;
+  	dbms_output.put_line('First Name: ' || v_fname);
+end;
+/
+
+-- 12. 
+declare
+	v_salary tblemp.salary%type;
+begin
+	select salary into v_salary
+  	from tblemp
+  	where fname = 'Maitry';
+  	dbms_output.put_line('Salary: ' || v_salary);
+end;
+/
+
+-- 13. 
+declare
+	v_jdate tblemp.jdate%type;
+begin
+  	select jdate into v_jdate
+  	from tblemp
+  	where lname = 'Patil';
+  	dbms_output.put_line('Joining Date: ' || v_jdate);
+end;
+/
+
+-- 14. 
+declare
+	emp_record tblemp%rowtype;
+begin
+  	select * into emp_record
+  	from tblemp
+  	where empid = 103;
+  	dbms_output.put_line('Employee Details: ' || emp_record.fname || ' ' || emp_record.lname || ', ' || emp_record.post || ', ' || 	emp_record.salary);
+end;
+/
+
+-- 15.
+declare
+	emp_record tblemp%rowtype;
+begin
+  	select* into emp_record
+  	from tblemp
+  	where jdate = TO_DATE('15-SEP-2003', 'DD-MON-YYYY');
+  	dbms_output.put_line('Employee Details: ' || emp_record.fname || ' ' || emp_record.lname || ', ' || emp_record.post || ', ' || emp_record.salary);
+end;
+/
+
+-- 16. 
+declare
+	emp_record tblemp%rowtype;
+begin
+  	select * into emp_record
+  	from tblemp
+  	where post = 'Electrician';
+  	dbms_output.put_line('Employee Details: ' || emp_record.fname || ' ' || emp_record.lname || ', ' || emp_record.salary);
+end;
+/
+
+-- 17. 
+declare
+	v_empid tblemp.empid%type := &eid;
+  	emp_record tblemp%rowtype;
+begin
+  	select * into emp_record
+  	from tblemp
+  	where empid = v_empid;
+  	dbms_output.put_line('Employee Details: ' || emp_record.fname || ' ' || emp_record.lname || ', ' || emp_record.post || ', ' || emp_record.salary);
+end;
+/
+
+-- 18. 
+declare  
+	v_empid tblemp.empid%type := &eid;
+  	emp_record tblemp%rowtype;
+begin
+  	select empid, fname, salary into emp_record.empid, emp_record.fname, emp_record.salary
+  	from tblemp
+  	where empid = v_empid;
+  	dbms_output.put_line('Employee ID: ' || emp_record.empid || ', First Name: ' || emp_record.fname || ', Salary: ' || emp_record.salary);
+end;
+/
+
+-- 19. 
+declare
+	v_empid tblemp.empid%type := &eid;
+  	emp_record tblemp%rowtype;
+  	v_dname tbldept.dname%type;
+begin
+  	select e.empid, e.fname, e.salary, d.dname
+  	into emp_record.empid, emp_record.fname, emp_record.salary, v_dname
+  	from tblemp e, tbldept d
+  	where e.empid = v_empid AND e.did = d.did;
+  	dbms_output.put_line('Employee ID: ' || emp_record.empid || ', First Name: ' || emp_record.fname || ', Salary: ' || emp_record.salary || ', Department Name: ' || v_dname);
+end;
+/
+
+-- 20. 
+declare
+	emp_record tblemp%rowtype;
+  	v_dname tbldept.dname%type;
+begin
+  	select e.fname, e.lname, e.post, d.dname
+  	into emp_record.fname, emp_record.lname, emp_record.post, v_dname
+  	from tblemp e, tbldept d
+  	where e.salary = 17000 and e.did = d.did;
+  	dbms_output.put_line('First Name: ' || emp_record.fname || ', Last Name: ' || emp_record.lname || ', Post: ' || emp_record.post || ', Department Name: ' || v_dname);
+end;
+/
+
