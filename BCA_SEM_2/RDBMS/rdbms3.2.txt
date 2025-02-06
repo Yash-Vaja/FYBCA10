@@ -1,0 +1,112 @@
+set serveroutput on;
+
+--1.
+begin
+	dbms_output.put_line('Relational Database Management System');
+end;
+/
+
+--2.
+declare
+	a number:=50;
+begin
+	a:=a+20;
+	dbms_output.put_line('The value of A :-' || a);
+end;
+/
+
+--3.
+begin
+	dbms_output.put_line('The sum of :-' || (50+70) );
+end;
+/
+
+--4.
+declare
+	a number;
+	b number;
+	average number;
+begin
+	a:=&a;
+	b:=&b;
+	average:= (a + b) / 2;
+	dbms_output.put_line('The average of two numbers is :-' || average);
+end;
+/
+
+--5.
+declare
+	str varchar2(50);
+begin
+	str:='&str';
+	dbms_output.put_line('The string is :-' || str);
+end;
+/
+
+--6.
+declare
+	rno number;
+	name varchar2(50);
+	per float;
+	dob date;
+begin
+	rno:=&rno;
+	name:='&name';
+	per:=&per;
+	dob:='&dob';
+	dbms_output.put_line('The roll no. is :-' || rno);
+	dbms_output.put_line('The name is :-' || name);
+	dbms_output.put_line('The Percentage is:-' || per);	
+	dbms_output.put_line('The Date of birth is :-' || dob);
+end;
+/
+
+--7.
+declare
+	p number;
+	r number;
+	n number;
+	si number;
+begin
+	p:=&p;
+	r:=&r;
+	n:=&n;
+	si:=(p*r*n)/100;
+	dbms_output.put_line('The simple interest is :-' || si);
+end;
+/
+
+--8.
+declare
+	r float;
+	aoc float;
+begin
+	r:=&r;
+	aoc:=3.14*(r*r);
+	dbms_output.put_line('The area of circle :-' || aoc);
+end;
+/
+
+--9.
+begin
+	dbms_output.put_line('The conversion of 5 km in m :-' || 5*1000 );
+end;
+/
+
+--10.
+declare
+	price number;
+	qty number;
+	disc number;
+	amt number;
+	netamt number;
+begin
+	price:=&price;
+	qty:=&qty;
+	disc:=&disc;
+	amt:= price*qty;
+	netamt:=amt-(amt*disc)/100;
+	dbms_output.put_line('The total amount is:-' || amt);
+	dbms_output.put_line('The payable amount is :-' || netamt);
+end;
+/
