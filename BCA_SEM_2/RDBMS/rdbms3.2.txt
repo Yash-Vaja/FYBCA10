@@ -353,3 +353,78 @@ begin
   end case;
 end;
 /
+
+-- Create the tblemp1 table
+create table tblemp1 (
+  empid number primary key,
+  fname varchar2(50),
+  lname varchar2(50),
+  jdate date,
+  salary number,
+  manager_id number,
+  post varchar2(50),
+  did varchar2(10), foreign key(did) references tbldept16(did)
+);
+
+-- Insert data into tblemp1
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (101, 'Hemant', 'Sharma', TO_DATE('20-Jan-1995', 'DD-MON-YYYY'), 50000, NULL, 'Manager', 'D1');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (102, 'Rita', 'Gandhi', TO_DATE('20-Dec-1997', 'DD-MON-YYYY'), 45000, NULL, 'Manager', 'D2');
+insert into tblemp1(empid, fname, lname, jdate, salary, manager_id, post, did) values (103, 'Maya', 'Mistry', TO_DATE('12-Nov-2001', 'DD-MON-YYYY'), 30000, 101, 'Programmer', 'D1');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (104, 'Riya', 'Patel', TO_DATE('15-Sep-2003', 'DD-MON-YYYY'), 28000, 102, 'Programmer', 'D2');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (105, 'Shreya', 'Patel', TO_DATE('17-Oct-2010', 'DD-MON-YYYY'), 5000, 101, 'Peon', 'D1');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (106, 'Karan', 'Patel', TO_DATE('18-Aug-2015', 'DD-MON-YYYY'), 5000, 102, 'Peon', 'D2');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (107, 'Reyanshi', 'Vyas', TO_DATE('05-Jun-2011', 'DD-MON-YYYY'), 15000, 101, 'Clerk', 'D1');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (108, 'Mehul', 'Mehta', TO_DATE('06-May-2010', 'DD-MON-YYYY'), 17000, 102, 'Clerk', 'D2');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (109, 'Krupali', 'Patil', TO_DATE('08-Apr-2015', 'DD-MON-YYYY'), 10000, 101, 'Accountant', 'D1');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (110, 'Maitry', 'Vyas', TO_DATE('11-Mar-2017', 'DD-MON-YYYY'), 10000, 102, 'Accountant', 'D2');
+insert into tblemp1 (empid, fname, lname, jdate, salary, manager_id, post, did) values (111, 'Mohan', 'Mehta', TO_DATE('27-Feb-2020', 'DD-MON-YYYY'), 15000, 101, 'Electrician', 'D1');
+	
+-- 27. 
+declare
+  	v_record tblemp1%rowtype;
+begin
+  	select * into v_record from tblemp1 where salary < 20000 ;
+  	dbms_output.put_line('Employee Details: ' || v_record.fname || ' ' || v_record.lname || ' ' || v_record.post || ' ' || v_record.salary);
+end;
+/
+
+--28.
+declare
+	v_join tblemp1%rowtype;
+begin
+	select * into v_join from tblemp1 where jdate= '15 September 2003';
+  	dbms_output.put_line('Employee Details: ' || v_join.fname || ' ' || v_join.lname || ' ' || v_join.post || ' ' || v_join.salary);
+end;
+/  
+
+--29.
+	
+declare
+	v_peon tblemp1%rowtype;
+begin
+	select * into v_peon from tblemp1  where salary > 3000 and post = 'Peon' and did ='D2' ;
+	dbms_output.put_line('Employee Details: ' || v_peon.fname || ' ' || v_peon.lname || ' ' || v_peon.post || ' ' || v_peon.salary);
+
+end;
+/ 
+	
+--30.
+declare
+	v_empid number :=&empid ;
+begin
+	update tblemp1 set salary = salary + 2000 where empid =v_empid and jdate < TO_DATE('15-Jan-2015', 'DD-MON-YYYY') ;
+	commit;
+	dbms_output.put_line('Salary updates  :' || v_empid);
+end;
+/
+
+--31.
+declare
+	v_empid number :=&empid ;
+begin
+	update tblemp1 set salary = salary + 5000 where empid =v_empid and extract(year from jdate) =2015 ;
+	commit;
+	dbms_output.put_line('Salary updates  :' || v_empid);
+end;
+/
+
